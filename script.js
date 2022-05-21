@@ -36,37 +36,36 @@ function playRound (user, pc) {
     }
 }
 
-function game () {
-    let user;
-    let result;
-    let pcScore = 0;
-    let userScore = 0;
-    
-    for (let n = 0; n < 5; n++) {
-        user = prompt("Type Rock, Paper, or Scissors");
-        result = playRound(user, computerPlay());
-        
-        if (result.charAt(4) === "W") {
-            userScore++;
-        }
-        else if (result.charAt(4) === "L") {
-            pcScore++;
-        }
+const buttons = document.querySelectorAll('button');
+const resultContainer = document.querySelector('.result');
+const scoreContainer = document.querySelector('.score');
 
-        console.log(result);
+let userScore = 0;
+let pcScore = 0;
+
+buttons.forEach(btn => btn.addEventListener('click', play))
+
+function play (e) {
+    const result = playRound(e.target.classList.value, computerPlay());
+
+    if (result.charAt(4) === "W") {
+        userScore++;
     }
-    let resultText;
-    if (userScore > pcScore) {
-        resultText = "WIN";
-    }
-    else if (pcScore > userScore) {
-        resultText = "LOSE";
-    }
-    else {
-        resultText = "DRAW";
+    else if (result.charAt(4) === "L") {
+        pcScore++;
     }
 
-        console.log(`${userScore} rounds won and ${pcScore} rounds lost, YOU ${resultText}!`);
+    if (userScore === 5) {
+        resultContainer.textContent = 'Game Over! YOU WON';
+        userScore = 0;
+        pcScore = 0;
+    }  
+    else if (pcScore === 5) {
+        resultContainer.textContent = 'Game Over! YOU LOSE';
+        userScore = 0;
+        pcScore = 0;
+    } else resultContainer.textContent = result;
+
+
+    scoreContainer.textContent = `Your score ${userScore}, Computer score ${pcScore}`;
 }
-
-game();
